@@ -17,12 +17,12 @@ Docker Desktop is the only necessary pre-requisite.
 
 The steps to follow are:
 
-1. Start Docker Desktop
+1. Start the Docker Desktop
 2. Execute the following commands one by one.
-3. git clone https://github.com/PriyalShrimali1301/receipt-processor.git
-4. cd receipt-processor
-5. docker build -t receipt-processor .
-6. docker run -p 8080:8080 receipt-processor
+3. ```git clone https://github.com/PriyalShrimali1301/receipt-processor.git```
+4. ```cd receipt-processor```
+5. ```docker build -t receipt-processor .```
+6. ```docker run -p 8080:8080 receipt-processor```
 The application creates a container, installs necessary libraries, and conducts initial testing using JUnit.
 
 ### Access the application at
@@ -31,15 +31,16 @@ http://localhost:8080/
 The home page will display "Welcome to the Fetch Coding Assignmentt".
 
 ### Key Assumptions
-I have made some assumptions based on the schema provided in api.yml file.
 
-For validating retailer names, the regex pattern ^[\w\s\-]+$ is initially used. This pattern matches only letters, numbers, spaces, and hyphens. However, in the provided example, "M&M Corner Market" is considered valid despite containing an ampersand (&), which was not originally allowed by the pattern.
+I have made several assumptions based on the schema provided in the api.yml file.
 
-To accommodate this case and ensure consistency with testing scripts, I updated the regex to also permit ampersands. The revised pattern ^[\w\s\-&]+$ now allows letters, numbers, spaces, hyphens, and ampersands, while still excluding other special characters.
+To validate retailer names, I initially used the regex pattern ^[\w\s\-]+$, which matches only letters, numbers, spaces, and hyphens. However, the provided example, "M&M Corner Market," includes an ampersand (&), which the original pattern did not permit.
+
+To accommodate this case and ensure consistency with the testing scripts, I revised the regex pattern to ^[\w\s\-&]+$. This updated pattern now allows letters, numbers, spaces, hyphens, and ampersands while still excluding other special characters.
 
 ### Checks Applied
 
-Some checks the app does for each field are as follows (strictly based on api.yml):
+The following are the rules we have applied to validate the JSON response:
 
 1. Retailer name:
 
@@ -85,7 +86,7 @@ Some checks the app does for each field are as follows (strictly based on api.ym
 - It is a required field.
 - Cannot be negative.
 - Cannot be zero.
-- Cannot be more than 10e10. This is a design choice to avoid unrealistic price values.
+
 
 7. total:
 
@@ -156,22 +157,130 @@ In case of an invalid receipt ID, we get the following response
 
 ### 2. Input validation
 
-Validations of provided receipt details input are performed in the Service class:
+Receipt detail validations are handled in the Service class. For each check, a specific error message is returned to ensure that the input JSON contains all the necessary and correctly spelled fields in the proper format.
 
-For each valid data type field, pattern checks are conducted using regex. The allowed patterns are described in the api.yml components section and the application follows these patterns strictly. 
+1. Invalid Purchase Date
 
-Some other checks have been added which have been described in the Assumption section above.
+```
+{
+  "retailer": "M&M Corner Market",
+  "purchaseDate": "2022-45-20",
+  "purchaseTime": "12:33",
+  "items": [
+    {
+      "shortDescription": "Gatorade",
+      "price": "8.50"
+    },{
+      "shortDescription": "Gatorade",
+      "price": "2.25"
+    },{
+      "shortDescription": "Gatorade",
+      "price": "2.25"
+    },{
+      "shortDescription": "Gatorade",
+      "price": "2.25"
+    }
+  ],
+  "total": "9.20"
+}
+
+```
+
+Response: 
+
+```
+{
+    "error": "Purchase date format should be YYYY-MM-DD."
+}
+```
+
+2. Missing Short Description
+
+```
+{
+  "retailer": "M&M Corner Market",
+  "purchaseDate": "2022-15-20",
+  "purchaseTime": "12:33",
+  "items": [
+    {
+      
+      "price": "8.50"
+    },{
+      "shortDescription": "Gatorade",
+      "price": "2.25"
+    },{
+      "shortDescription": "Gatorade",
+      "price": "2.25"
+    },{
+      "shortDescription": "Gatorade",
+      "price": "2.25"
+    }
+  ],
+  "total": "9.20"
+}
+```
+Response:
+
+```
+{
+    "error": "Each item must have a non-empty shortDescription of type String."
+}
+```
+
+3. Invalid Retailer Name
+
+```
+{
+  "retailer": "M&M Corner {Market",
+  "purchaseDate": "2022-11-20",
+  "purchaseTime": "12:33",
+  "items": [
+    {
+      "shortDescription": "Gatorade",
+      "price": "8.50"
+    },{
+      "shortDescription": "Gatorade",
+      "price": "2.25"
+    },{
+      "shortDescription": "Gatorade",
+      "price": "2.25"
+    },{
+      "shortDescription": "Gatorade",
+      "price": "2.25"
+    }
+  ],
+  "total": "9.20"
+}
+```
+Response:
+
+```
+{
+    "error": "Retailer name can only contain letters, numbers, spaces, hyphens, and ampersands"
+}
+```
+For each valid data type field, pattern checks are performed using regular expressions. The allowed patterns are defined in the api.yml components section, and the application strictly adheres to these patterns.
+
+Additional checks, as described in the Assumptions section above, have also been implemented.
 
 ### 4. Logging
 
 Since this is a small application, light logging is implemented using the ```Log4j2``` library to keep the logging minimal and efficient. This approach ensures that performance remains optimal while still capturing essential log information.
 
 ### 3. Testing
-Testing has been performed using JUnit. I have designed the tests to validate a score.
+Testing has been performed using JUnit. I have designed the tests to validate the points being calculated based on the rules provided.
 Score Validation: Tests are written to make sure that the given rules have been implemented properly and correct scores are assigned to receipts.
 
+### 4. Improving the current version
 
-### 4. Accessing the server
+1. Currently, we process one JSON at a time, but there is a scope to enhance performance by implementing batch processing.
+2. Although we manage basic errors at present, there is potential to incorporate more comprehensive checks to cover a wider array of exceptions.
+3. Logging can be improved to manage different functionalities.
+4. Enhance the test suite by adding more unit tests. Currently, the code only validates the points calculated for a receipt. We can expand it to include unit tests for various endpoints and exceptions.
 
-For this particular task, no UI has been created except the basic html scripts to show errors.
+
+### 5. Application Overview
+
+Considering that this was a task focussing on the backend skills, I have not added any user interface. A basic HTML file is created to show the landing page.
+
 Postman was used to test the different endpoints and their functionalities.
