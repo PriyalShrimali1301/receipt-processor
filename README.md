@@ -1,6 +1,5 @@
-# receipt-processor
+# Receipt Processor Submission
 
-## Receipt Processor Submission
 ### A receipt processor app server is implemented that performs only 2 tasks
 
 1. Processing a given receipt to calculate a score and assigning an ID to the receipt.
