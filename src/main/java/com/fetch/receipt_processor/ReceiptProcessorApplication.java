@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ReceiptProcessorApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Hello, how are?");
+
 		SpringApplication.run(ReceiptProcessorApplication.class, args);
 
 	}

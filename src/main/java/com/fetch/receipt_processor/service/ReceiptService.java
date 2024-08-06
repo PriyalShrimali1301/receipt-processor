@@ -2,9 +2,12 @@ package com.fetch.receipt_processor.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import com.fetch.receipt_processor.controller.ReceiptController;
 import com.fetch.receipt_processor.model.Receipt;
 import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fetch.receipt_processor.repository.ReceiptRepository;
@@ -22,6 +25,8 @@ import java.util.UUID;
 
 public class ReceiptService {
 
+    private static final Logger logger = LogManager.getLogger(ReceiptController.class);
+
     private final ReceiptRepository receiptRepository;
 
     @Autowired
@@ -31,11 +36,13 @@ public class ReceiptService {
 
     @Transactional
     public Map<String, String> saveReceipt(JsonNode json) {
+        logger.info("ReceiptService saveReceipt: Entered");
         Map<String, String> response = new HashMap<>();
         String validationError = validateReceipt(json);
 
         if (!validationError.isEmpty()) {
             response.put("error", validationError);
+            logger.info("ReceiptService validationError: "+validationError);
             return response;
         }
 
@@ -164,13 +171,14 @@ public class ReceiptService {
     }
 
     public int calculatePointsForTesting(JsonNode jsonNode) {
+        logger.info("ReceiptService calculatePointsForTesting:");
         return calculatePoints(jsonNode);
     }
 
     private int calculatePoints(JsonNode json) {
         int totalPoints = 0;
         String retailerName = json.get("retailer").asText();
-
+        logger.info("ReceiptService calculatePointsForTesting: "+totalPoints+ " at beginning");
         // One point for every alphanumeric character in the retailer name.
         for (char c : retailerName.toCharArray()) {
             if (Character.isLetterOrDigit(c)) {
@@ -226,7 +234,7 @@ public class ReceiptService {
         if (!purchaseTime.isBefore(startTime) && !purchaseTime.isAfter(endTime)) {
             totalPoints += 10;
         }
-
+        logger.info("ReceiptService calculatePointsForTesting: "+totalPoints+ " at end");
         return totalPoints;
     }
 }
