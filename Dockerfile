@@ -10,7 +10,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Build the project and run tests
-RUN mvn clean install
+RUN mvn clean install -X
 
 # Use an official OpenJDK image as the base image
 FROM openjdk:11-jdk-slim
