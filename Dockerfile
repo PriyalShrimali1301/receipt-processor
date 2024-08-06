@@ -1,5 +1,5 @@
 # Use an official Maven image to run the build
-FROM maven:3.8.1-jdk-22 AS build
+FROM maven:3.8.1-jdk-11 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
