@@ -1,0 +1,7 @@
+com\fetch\receipt_processor\controller\CustomErrorController.class
+com\fetch\receipt_processor\config\AppConfig.class
+com\fetch\receipt_processor\controller\ReceiptController.class
+com\fetch\receipt_processor\repository\ReceiptRepository.class
+com\fetch\receipt_processor\ReceiptProcessorApplication.class
+com\fetch\receipt_processor\service\ReceiptService.class
+com\fetch\receipt_processor\model\Receipt.class
