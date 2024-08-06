@@ -12,6 +12,7 @@
 4. Containerization: Docker for easy setup and deployment
 
 ### How to run
+
 Docker Desktop is the only necessary pre-requisite.
 
 The steps to follow are:
@@ -27,7 +28,8 @@ The application creates a container, installs necessary libraries, and conducts 
 
 ### Access the application at
 
-http://localhost:8080/
+```http://localhost:8080/```
+
 The home page will display "Welcome to the Fetch Coding Assignmentt".
 
 ### Key Assumptions
@@ -121,6 +123,7 @@ Takes in a JSON body containing the reciept details that follows the following s
     ]
 }
 ```
+
 The endpoint takes in this receipt data and calculates a score based on the rules provided in the instructions. A random uuid is generated for each reciept and is stored along with the calculated score in the memory.
 
 In response, the API returns a JSON containing the receipt ID as shown below
@@ -131,6 +134,7 @@ In case of an invalid receipt, we get a specific response telling us which valid
 ```
 {"error": "Retailer name cannot be empty"}
 ```
+
 Note that As per instructions, I have not used any database for storage. In memory H2 storage has been used and the application does not persist data i.e all data is lost upon terminating the server. 
 
 Since, the storage is in memory, I have chosen not to store the entire receipt. Only the ID and the score are stored as key-value pairs in the H2 database.  This design is opted because the instructions does not require me to allow updating existing receipts and hence storage of the entire receipt is not necessary.
@@ -145,6 +149,7 @@ If a receipt with the provided ID is present, the following JSON response is ret
 ```
 { "points": 32 }
 ```
+
 In case of an invalid receipt ID, we get the following response
 
 ```
