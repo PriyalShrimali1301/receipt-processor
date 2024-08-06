@@ -100,8 +100,8 @@ The following are the rules we have applied to validate the JSON response:
 
 #### Please ensure that the field names in the input JSON maintain consistent spelling.
 
-## Application Details
-### 1. Endpoints
+### Application Details
+#### 1. Endpoints
 The server exposes 2 endpoints
 
 ###### Endpoint 1: Processing receipt
@@ -135,7 +135,7 @@ Note that As per instructions, I have not used any database for storage. In memo
 
 Since, the storage is in memory, I have chosen not to store the entire receipt. Only the ID and the score are stored as key-value pairs in the H2 database.  This design is opted because the instructions does not require me to allow updating existing receipts and hence storage of the entire receipt is not necessary.
 
-### Endpoint 2: Get Receipt points
+#### Endpoint 2: Get Receipt points
 Path: /receipts/{id}/points
 Method: GET
 Response: A JSON object containing the number of points awarded.
@@ -151,7 +151,7 @@ In case of an invalid receipt ID, we get the following response
 {"error": "No receipt with the given id was found"}
 ```
 
-## 2. Input validation
+### 2. Input validation
 
 Receipt detail validations are handled in the Service class. For each check, a specific error message is returned to ensure that the input JSON contains all the necessary and correctly spelled fields in the proper format.
 
@@ -259,15 +259,15 @@ For each valid data type field, pattern checks are performed using regular expre
 
 Additional checks, as described in the Assumptions section above, have also been implemented.
 
-## 4. Logging
+### 4. Logging
 
 Since this is a small application, light logging is implemented using the ```Log4j2``` library to keep the logging minimal and efficient. This approach ensures that performance remains optimal while still capturing essential log information.
 
-## 3. Testing
+### 3. Testing
 Testing has been performed using JUnit. I have designed the tests to validate the points being calculated based on the rules provided.
 Score Validation: Tests are written to make sure that the given rules have been implemented properly and correct scores are assigned to receipts.
 
-## 4. Improving the current version
+### 4. Improving the current version
 
 1. Currently, we process one JSON at a time, but there is a scope to enhance performance by implementing batch processing.
 2. Although we manage basic errors at present, there is potential to incorporate more comprehensive checks to cover a wider array of exceptions.
@@ -275,7 +275,7 @@ Score Validation: Tests are written to make sure that the given rules have been 
 4. Enhance the test suite by adding more unit tests. Currently, the code only validates the points calculated for a receipt. We can expand it to include unit tests for various endpoints and exceptions.
 
 
-## 5. Application Overview
+### 5. Application Overview
 
 Considering that this was a task focussing on the backend skills, I have not added any user interface. A basic HTML file is created to show the landing page.
 
