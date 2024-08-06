@@ -23,6 +23,7 @@ The steps to follow are:
 4. ```cd receipt-processor```
 5. ```docker build -t receipt-processor .```
 6. ```docker run -p 8080:8080 receipt-processor```
+
 The application creates a container, installs necessary libraries, and conducts initial testing using JUnit.
 
 ### Access the application at
@@ -152,7 +153,7 @@ If a receipt with the provided ID is present, the following JSON response is ret
 In case of an invalid receipt ID, we get the following response
 
 ```
-{"points": -1}
+{"error": "No receipt with the given id was found"}
 ```
 
 ### 2. Input validation
