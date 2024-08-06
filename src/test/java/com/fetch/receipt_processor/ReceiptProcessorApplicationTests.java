@@ -10,6 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,6 +68,8 @@ class ReceiptProcessorApplicationTests {
 			e.printStackTrace();
 		}
 	}
+
+
 
 	@Test
 	public void testCalculateReceiptScore2() {
@@ -143,7 +148,204 @@ class ReceiptProcessorApplicationTests {
 		}
 	}
 
+	@Test
+	public void testCalculateReceiptScore6() {
+
+		String jsonString = "{\n" +
+				"  \"retailer\": \"Target\",\n" +
+				"  \"purchaseDate\": \"2022-01-01\",\n" +
+				"  \"purchaseTime\": \"13:01\",\n" +
+				"  \"items\": [\n" +
+				"    {\n" +
+				"      \"shortDescription\": \"Mountain {Dew 12PK\",\n" +
+				"      \"price\": \"6.49\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Emils Cheese Pizza\",\n" +
+				"      \"price\": \"12.25\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Knorr Creamy Chicken\",\n" +
+				"      \"price\": \"1.26\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Doritos Nacho Cheese\",\n" +
+				"      \"price\": \"3.35\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"   Klarbrunn 12-PK 12 FL OZ  \",\n" +
+				"      \"price\": \"12.00\"\n" +
+				"    }\n" +
+				"  ],\n" +
+				"  \"total\": \"35.35\"\n" +
+				"}";
+
+		try {
+			JsonNode jsonNode = objectMapper.readTree(jsonString);
+			Map<String, String> expected = new HashMap<>();
+			expected.put("error", "Short Description contains invalid characters.");
+
+			Map<String, String> actual= receiptService.saveReceipt(jsonNode);
+			assertEquals(expected, actual);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testCalculateReceiptScore7() {
+
+		String jsonString = "{\n" +
+				"  \"retailer\": \"Target\",\n" +
+				"  \"purchaseDate\": \"2022-13-01\",\n" +
+				"  \"purchaseTime\": \"13:01\",\n" +
+				"  \"items\": [\n" +
+				"    {\n" +
+				"      \"shortDescription\": \"Mountain Dew 12PK\",\n" +
+				"      \"price\": \"6.49\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Emils Cheese Pizza\",\n" +
+				"      \"price\": \"12.25\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Knorr Creamy Chicken\",\n" +
+				"      \"price\": \"1.26\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Doritos Nacho Cheese\",\n" +
+				"      \"price\": \"3.35\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"   Klarbrunn 12-PK 12 FL OZ  \",\n" +
+				"      \"price\": \"12.00\"\n" +
+				"    }\n" +
+				"  ],\n" +
+				"  \"total\": \"35.35\"\n" +
+				"}";
+
+		try {
+			JsonNode jsonNode = objectMapper.readTree(jsonString);
+			Map<String, String> expected = new HashMap<>();
+			expected.put("error", "Purchase date format should be YYYY-MM-DD.");
+
+			Map<String, String> actual= receiptService.saveReceipt(jsonNode);
+			assertEquals(expected, actual);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testCalculateReceiptScore8() {
+
+		String jsonString = "{\n" +
+				"  \"retailer\": \"Target\",\n" +
+				"  \"purchaseDate\": \"2022-11-01\",\n" +
+				"  \"purchaseTime\": \"13:01\",\n" +
+				"  \"items\": [\n" +
+				"    {\n" +
+				"      \"shortDescription\": \"Mountain Dew 12PK\",\n" +
+				"      \"price\": \"6.49\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Emils Cheese Pizza\",\n" +
+				"      \"price\": \"12.5\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Knorr Creamy Chicken\",\n" +
+				"      \"price\": \"1.26\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Doritos Nacho Cheese\",\n" +
+				"      \"price\": \"3.35\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"   Klarbrunn 12-PK 12 FL OZ  \",\n" +
+				"      \"price\": \"12.00\"\n" +
+				"    }\n" +
+				"  ],\n" +
+				"  \"total\": \"35.35\"\n" +
+				"}";
+
+		try {
+			JsonNode jsonNode = objectMapper.readTree(jsonString);
+			Map<String, String> expected = new HashMap<>();
+			expected.put("error", "Price must be a decimal number with exactly 2 decimal places.");
+
+			Map<String, String> actual= receiptService.saveReceipt(jsonNode);
+			assertEquals(expected, actual);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testCalculateReceiptScore9() {
+
+		String jsonString = "{\n" +
+				"  \"retailer\": \"Target\",\n" +
+				"  \"purchaseDate\": \"2022-11-01\",\n" +
+				"  \"purchaseTime\": \"13:01\",\n" +
+				"  \"items\": [\n" +
+				"    {\n" +
+				"      \"shortDescription\": \"Mountain Dew 12PK\",\n" +
+				"      \"price\": \"6.49\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Emils Cheese Pizza\",\n" +
+				"      \"price\": \"12.50\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Knorr Creamy Chicken\",\n" +
+				"      \"price\": \"1.26\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Doritos Nacho Cheese\",\n" +
+				"      \"price\": \"3.35\"\n" +
+				"    },{\n" +
+
+				"      \"price\": \"12.00\"\n" +
+				"    }\n" +
+				"  ],\n" +
+				"  \"total\": \"35.35\"\n" +
+				"}";
+
+		try {
+			JsonNode jsonNode = objectMapper.readTree(jsonString);
+			Map<String, String> expected = new HashMap<>();
+			expected.put("error", "Each item must have a non-empty shortDescription of type String.");
+
+			Map<String, String> actual= receiptService.saveReceipt(jsonNode);
+			assertEquals(expected, actual);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
+	@Test
+	public void testCalculateReceiptScore10() {
 
+		String jsonString = "{\n" +
+				"  \"retailer\": \"Target\",\n" +
+				"  \"purchaseDate\": \"2022-11-01\",\n" +
+				"  \"purchaseTime\": \"125:01\",\n" +
+				"  \"items\": [\n" +
+				"    {\n" +
+				"      \"shortDescription\": \"Mountain Dew 12PK\",\n" +
+				"      \"price\": \"6.49\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Emils Cheese Pizza\",\n" +
+				"      \"price\": \"12.50\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Knorr Creamy Chicken\",\n" +
+				"      \"price\": \"1.26\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Doritos Nacho Cheese\",\n" +
+				"      \"price\": \"3.35\"\n" +
+				"    },{\n" +
+				"      \"shortDescription\": \"Doritos Sour Cream Cheese\",\n" +
+				"      \"price\": \"12.00\"\n" +
+				"    }\n" +
+				"  ],\n" +
+				"  \"total\": \"35.35\"\n" +
+				"}";
+
+		try {
+			JsonNode jsonNode = objectMapper.readTree(jsonString);
+			Map<String, String> expected = new HashMap<>();
+			expected.put("error", "Purchase time is invalid. It must be in format HH:MM (24-hour clock) with valid values.");
+
+			Map<String, String> actual= receiptService.saveReceipt(jsonNode);
+			assertEquals(expected, actual);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
