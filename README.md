@@ -129,6 +129,7 @@ The endpoint takes in this receipt data and calculates a score based on the rule
 In response, the API returns a JSON containing the receipt ID as shown below
 
 ```{ "id": "7fb1377b-b223-49d9-a31a-5a02701dd310" }```
+
 In case of an invalid receipt, we get a specific response telling us which validation check failed
 
 ```
