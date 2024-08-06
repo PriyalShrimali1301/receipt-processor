@@ -19,15 +19,15 @@ The steps to follow are:
 
 1. Start Docker Desktop
 2. Execute the following commands one by one.
-3. git clone https://github.com/Suraj-Vashista-BK/ReceiptProcessor.git
-4. cd ReceiptProcessor
-5. docker-compose build
-6. docker-compose up
-The application creates a container, installs necessary libraries, and conducts initial testing using Jest.
+3. git clone [Link](https://github.com/PriyalShrimali1301/receipt-processor.git)
+4. cd receipt-processor
+5. docker build -t receipt-processor .
+6. docker run -p 8080:8080 receipt-processor
+The application creates a container, installs necessary libraries, and conducts initial testing using JUnit.
 
 ### Access the application at
 
-http://localhost:3000/
+http://localhost:8080/
 The home page will display "Welcome to the Fetch Coding Assignmentt".
 
 ### Key Assumptions
