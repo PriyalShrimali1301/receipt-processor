@@ -1,6 +1,6 @@
 
 # Use an official Maven image to run the build
-FROM maven:3.8.6-openjdk-11 AS build
+FROM jelastic/maven:3.9.4-openjdk-22.ea-b17 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -13,7 +13,7 @@ COPY src ./src
 RUN mvn clean install -X
 
 # Use an official OpenJDK image as the base image
-FROM openjdk:11-jdk-slim
+FROM openjdk:22-jdk-slim
 
 # Set the working directory inside the container
 WORKDIR /app
