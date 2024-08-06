@@ -19,7 +19,7 @@ The steps to follow are:
 
 1. Start Docker Desktop
 2. Execute the following commands one by one.
-3. git clone [Link](https://github.com/PriyalShrimali1301/receipt-processor.git)
+3. git clone https://github.com/PriyalShrimali1301/receipt-processor.git
 4. cd receipt-processor
 5. docker build -t receipt-processor .
 6. docker run -p 8080:8080 receipt-processor
