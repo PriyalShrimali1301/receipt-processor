@@ -145,11 +145,14 @@ Response: A JSON object containing the number of points awarded.
 A simple ```@GetMApping``` endpoint that looks up the receipt by the ID and returns an object specifying the points awarded.
 
 If a receipt with the provided ID is present, the following JSON response is returned:
-
+```
 { "points": 32 }
+```
 In case of an invalid receipt ID, we get the following response
 
+```
 {"points": -1}
+```
 
 ### 2. Input validation
 
