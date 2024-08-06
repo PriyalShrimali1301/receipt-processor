@@ -105,13 +105,13 @@ The server exposes 2 endpoints
 
 ###### Endpoint 1: Processing receipt
 Path: /receipts/process
-Method: POST
+Method: ```POST```
 Payload: Receipt JSON
 Response: JSON containing an id for the receipt.
 Takes in a JSON body containing the reciept details that follows the following schema mentioned in api.yml and a sample valid receipt is as shown below.
-
+```
 {
-    "retailer": "Target",
+   "retailer": "Target",
     "purchaseDate": "2022-01-02",
     "purchaseTime": "13:13",
     "total": "1.25",
@@ -119,46 +119,50 @@ Takes in a JSON body containing the reciept details that follows the following s
         {"shortDescription": "Pepsi - 12-oz", "price": "1.25"}
     ]
 }
+```
 The endpoint takes in this receipt data and calculates a score based on the rules provided in the instructions. A random uuid is generated for each reciept and is stored along with the calculated score in the memory.
 
 In response, the API returns a JSON containing the receipt ID as shown below
 
-{ "id": "7fb1377b-b223-49d9-a31a-5a02701dd310" }
-In case of an invalid receipt, we get the following response
+```{ "id": "7fb1377b-b223-49d9-a31a-5a02701dd310" }```
+In case of an invalid receipt, we get a specific response telling us which validation check failed
 
-{"error": "The receipt is invalid"}
-Note that As per instructions, I have not used any database for storage. In memory storage has been used and the application does not persist data i.e all data is lost upon terminating the server. Since, the storage is in memory, I have chosen not to store the entire receipt. Only the ID and the score is stored as key-value pairs in the local cache. This design is opted because the instructions does not require me to allow updating existing receipts and hence storage of the entire receipt is not necessary.
+```
+{"error": "Retailer name cannot be empty"}
+```
+Note that As per instructions, I have not used any database for storage. In memory H2 storage has been used and the application does not persist data i.e all data is lost upon terminating the server. 
+
+The database can be accessed using 
+```
+localhost:8080/h2-console
+```
+Since, the storage is in memory, I have chosen not to store the entire receipt. Only the ID and the score are stored as key-value pairs in the H2 database.  This design is opted because the instructions does not require me to allow updating existing receipts and hence storage of the entire receipt is not necessary.
 
 ##### Endpoint 2: Get Receipt points
 Path: /receipts/{id}/points
 Method: GET
 Response: A JSON object containing the number of points awarded.
-A simple Getter endpoint that looks up the receipt by the ID and returns an object specifying the points awarded.
+A simple ```@GetMApping``` endpoint that looks up the receipt by the ID and returns an object specifying the points awarded.
 
 If a receipt with the provided ID is present, the following JSON response is returned:
 
 { "points": 32 }
 In case of an invalid receipt ID, we get the following response
 
-{"error": "No receipt found for that id"}
+{"points": -1}
 
 ### 2. Input validation
 
-Validations of provided receipt details input is performed in the Service class:
+Validations of provided receipt details input are performed in the Service class:
 
 For each valid data type field, pattern checks are conducted using regex. The allowed patterns are described in the api.yml components section and the application follows these patterns stricly. I have also explained all the expressions in detail under the Assumptions section.
 
 ### 3. Testing
-Testing has been performed using JUnit. I have designed the tests to check the following 3 areas:
-
+Testing has been performed using JUnit. I have designed the tests to validate a score.
 Score Validation: Tests are written to make sure that the given rules have been implemented properly and correct scores are assigned to receipts.
-EndPoint Validation: Tests are written to make sure that server endpoints provides appropriate HTTP response codes and descriptions for all different types of inputs.
-A total of 24 tests are written that are auto executed upto docker build.
 
-### 4. Logs
-Considering this to be a small application, for simplicity I have only logged the details of the HTTP request to the console using a npm library called morgan.
 
-### Accessing the server
+### 4. Accessing the server
 
 For this particular task, no UI has been created except the basic html scripts to show errors.
 Postman was used to test the different endpoints and their functionalities.
