@@ -28,7 +28,7 @@ The application creates a container, installs necessary libraries, and conducts 
 ### Access the application at
 
 http://localhost:3000/
-The home page will display "Welcome To Fetch Coding Assignment".
+The home page will display "Welcome to the Fetch Coding Assignmentt".
 
 ### Key Assumptions
 I have made some assumptions based on the schema provided in api.yml file.
@@ -158,7 +158,13 @@ In case of an invalid receipt ID, we get the following response
 
 Validations of provided receipt details input are performed in the Service class:
 
-For each valid data type field, pattern checks are conducted using regex. The allowed patterns are described in the api.yml components section and the application follows these patterns stricly. I have also explained all the expressions in detail under the Assumptions section.
+For each valid data type field, pattern checks are conducted using regex. The allowed patterns are described in the api.yml components section and the application follows these patterns strictly. 
+
+Some other checks have been added which have been described in the Assumption section above.
+
+### 4. Logging
+
+Since this is a small application, light logging is implemented using the ```Log4j2``` library to keep the logging minimal and efficient. This approach ensures that performance remains optimal while still capturing essential log information.
 
 ### 3. Testing
 Testing has been performed using JUnit. I have designed the tests to validate a score.
