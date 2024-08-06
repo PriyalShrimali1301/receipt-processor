@@ -7,9 +7,9 @@
 2. Providing a score for a given receipt ID.
 
 ### Technologies Used
-1. Primary Language: JavaScript (Node.js)
-2. Framework: Express
-3. Testing: Jest for unit testing
+1. Primary Language: Java 
+2. Framework: SpringBoot
+3. Testing: JUnit for unit testing
 4. Containerization: Docker for easy setup and deployment
 
 ### How to run
@@ -95,7 +95,7 @@ Some checks the app does for each field are as follows (strictly based on api.ym
 - It is a required field.
 - Cannot be negative.
 - Cannot be zero.
-- Cannot be more than 10e10. This is a design choice to avoid unrealistic total values.
+
 
 #### Please ensure that the field names in the input JSON maintain consistent spelling.
 
